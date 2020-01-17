@@ -430,6 +430,14 @@ class ShapefileReader extends Shapefile implements \Iterator
                     } while (ord(substr($value, -1)) != Shapefile::DBT_FIELD_TERMINATOR && ord(substr($value, -2, 1)) != Shapefile::DBT_FIELD_TERMINATOR);
                     $value = substr($value, 0, -2); 
                 }
+
+                /*
+                 * Force type conversion
+                 */
+                if ($type === 'N') {
+                    $value = strpos($value, '.') !== false ? floatval($value) : intval($value);
+                }
+
                 $Geometry->setData($f['name'], $value);
             }
         }
